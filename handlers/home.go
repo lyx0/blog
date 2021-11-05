@@ -1,14 +1,9 @@
 package handlers
 
-import (
-	"fmt"
-	"net/http"
+import "github.com/gin-gonic/gin"
 
-	"github.com/gorilla/mux"
-)
-
-func HomeHandler(w http.ResponseWriter, r *http.Request) {
-	vars := mux.Vars(r)
-	w.WriteHeader(http.StatusOK)
-	fmt.Fprintf(w, "Category: %v\n", vars["Home"])
+func GetHome(c *gin.Context) {
+	c.IndentedJSON(200, gin.H{
+		"message": "pong",
+	})
 }
