@@ -1,16 +1,27 @@
 package main
 
 import (
-	"github.com/gin-gonic/gin"
-	handlers "github.com/lyx0/blog/handlers"
+	"html/template"
+	"log"
+	"net/http"
 )
 
 func main() {
-	router := gin.Default()
-	router.GET("/", handlers.GetHome)
-	router.GET("/posts", handlers.GetPosts)
-	router.POST("/posts", handlers.AddPosts)
-	router.DELETE("/posts", handlers.DeletePost)
 
-	router.Run("localhost:8080")
+	http.HandleFunc("/post", post)
+	http.HandleFunc("/", func(w http.ResponseWriter, r *http.Request) {
+		w.Write([]byte("Hello, world!"))
+	})
+
+	http.ListenAndServe(":8080", nil)
+
+}
+
+func post(rw http.ResponseWriter, r *http.Request) {
+	tpl, err := template.ParseFiles("templates/post.gohtml")
+	if err != nil {
+		log.Fatalln(err)
+	}
+	tpl.ExecuteTemplate(rw, "post.gohtml", " Good Post title")
+
 }
